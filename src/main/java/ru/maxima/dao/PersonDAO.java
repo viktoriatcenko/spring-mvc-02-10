@@ -17,9 +17,9 @@ public class PersonDAO {
     {
 
         people = new ArrayList<>();
-        people.add(new Person(++PEOPLE_COUNT, "Damir"));
-        people.add(new Person(++PEOPLE_COUNT, "Airat"));
-        people.add(new Person(++PEOPLE_COUNT, "Maxim"));
+        people.add(new Person(++PEOPLE_COUNT, "Damir", 17, "damir@mail.ru"));
+        people.add(new Person(++PEOPLE_COUNT, "Airat", 25, "airat@mail.ru"));
+        people.add(new Person(++PEOPLE_COUNT, "Maxim", 27, "maxim@mail.ru"));
     }
 
 
@@ -41,5 +41,13 @@ public class PersonDAO {
     public void update(Long id, Person editedPerson) {
         Person personToBeUpdated = findById(id);
         personToBeUpdated.setName(editedPerson.getName());
+        personToBeUpdated.setAge(editedPerson.getAge());
+        personToBeUpdated.setEmail(editedPerson.getEmail());
+    }
+
+    public void deleteById(Long id) {
+//        Person personToBeDeleted = findById(id);
+//        people.remove(personToBeDeleted);
+        people.removeIf(p -> p.getId().equals(id));
     }
 }
