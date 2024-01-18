@@ -55,6 +55,7 @@ public class PeopleController {
         }
         personDAO.save(person);
         return "redirect:/people";
+
     }
 
     @GetMapping("/{id}/edit")
