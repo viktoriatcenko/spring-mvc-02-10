@@ -65,9 +65,10 @@ public class PersonDAO {
     public Person findById(Long id) {
         Person person = null;
         try {
-            Statement statement = connection.createStatement();
-            String SQL = "select * from person where id = " + id;
-            ResultSet resultSet = statement.executeQuery(SQL);
+
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from person where id = ?");
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
 
             while (resultSet.next()) {
@@ -84,20 +85,14 @@ public class PersonDAO {
     }
 
     public void save(Person person) {
-        Person maxByAge = getAllPeople()
-                .stream()
-                .max(Comparator.comparing(Person::getAge))
-                .orElseThrow(NoSuchElementException::new);
-        Long nextId =  (maxByAge.getId() + 1);
         try {
-            Statement statement = connection.createStatement();
-            String SQL = "insert into person(id, name, age, email) values (" +
-                    nextId + ", '" +
-                    person.getName() + "'," +
-                    person.getAge() + ", '" +
-                    person.getEmail() + "'" +
-                    ")";
-            statement.executeUpdate(SQL);
+
+            PreparedStatement preparedStatement
+                    = connection.prepareStatement("insert into person(name, age, email) values (?, ?, ?)");
+            preparedStatement.setString(1, person.getName());
+            preparedStatement.setInt(2, person.getAge());
+            preparedStatement.setString(3, person.getEmail());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -105,13 +100,15 @@ public class PersonDAO {
 
     public void update(Long id, Person editedPerson) {
         try {
-            Statement statement = connection.createStatement();
-            String SQL = "update person " +
-                    "set name = '" + editedPerson.getName() + "'" +
-                    ", age = " + editedPerson.getAge() +
-                    ", email = '" + editedPerson.getEmail() + "' " +
-                    " where id = " + id;
-            statement.executeUpdate(SQL);
+            PreparedStatement preparedStatement
+                    = connection.prepareStatement("update person " +
+                    "set name = ?, age = ?, email = ?" +
+                    " where id = ?;");
+            preparedStatement.setString(1, editedPerson.getName());
+            preparedStatement.setInt(2, editedPerson.getAge());
+            preparedStatement.setString(3, editedPerson.getEmail());
+            preparedStatement.setLong(4, id);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -119,9 +116,10 @@ public class PersonDAO {
 
     public void deleteById(Long id) {
         try {
-            Statement statement = connection.createStatement();
-            String SQL = "delete from person where id = " + id;
-            statement.executeUpdate(SQL);
+            PreparedStatement preparedStatement
+                    = connection.prepareStatement("delete from person where id = ?");
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
