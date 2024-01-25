@@ -9,10 +9,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21627efb-db00-4b7b-9b50-8ba01d73a4eb" name="Changes" comment="sql scripts">
+    <list default="true" id="21627efb-db00-4b7b-9b50-8ba01d73a4eb" name="Changes" comment="Prepared statement">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/maxima/controllers/AdminController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/maxima/dao/PersonMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/database.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/database.properties.origin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin-page.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/maxima/config/SpringConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/maxima/config/SpringConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/maxima/dao/PersonDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/maxima/dao/PersonDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sql-scripts.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql-scripts.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/maxima/model/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/maxima/model/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/applicationContextMVC.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +193,8 @@
       <workItem from="1705152164255" duration="587000" />
       <workItem from="1705330543600" duration="10335000" />
       <workItem from="1705593686407" duration="8945000" />
-      <workItem from="1705939274793" duration="7896000" />
+      <workItem from="1705939274793" duration="8135000" />
+      <workItem from="1706198459242" duration="7277000" />
     </task>
     <task id="LOCAL-00001" summary="init - 2">
       <created>1702921952264</created>
@@ -235,7 +245,14 @@
       <option name="project" value="LOCAL" />
       <updated>1705943985791</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Prepared statement">
+      <created>1705947460488</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1705947460488</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,7 +274,8 @@
     <MESSAGE value="init - 3" />
     <MESSAGE value="init - 4" />
     <MESSAGE value="sql scripts" />
-    <option name="LAST_COMMIT_MESSAGE" value="sql scripts" />
+    <MESSAGE value="Prepared statement" />
+    <option name="LAST_COMMIT_MESSAGE" value="Prepared statement" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -266,21 +284,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/ru/maxima/controllers/HelloController.java</url>
           <line>21</line>
           <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ru/maxima/dao/PersonDAO.java</url>
-          <line>89</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ru/maxima/dao/PersonDAO.java</url>
-          <line>102</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ru/maxima/dao/PersonDAO.java</url>
-          <line>118</line>
-          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

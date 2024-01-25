@@ -24,4 +24,6 @@ public class Person {
     @NotEmpty(message = "Email should not to be empty")
     @Email(message = "Email is not valid")
     private String email;
+
+    private boolean isAdmin;
 }
