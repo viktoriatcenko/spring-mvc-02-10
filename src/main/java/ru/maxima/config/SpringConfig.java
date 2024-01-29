@@ -9,6 +9,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -18,11 +21,12 @@ import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
 import javax.sql.DataSource;
 import java.util.Objects;
+import java.util.Properties;
 
 @Configuration
 @ComponentScan("ru.maxima")
 @EnableWebMvc
-@PropertySource("classpath:database.properties")
+@PropertySource("classpath:hibernate.properties")
 public class SpringConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;
@@ -58,18 +62,47 @@ public class SpringConfig implements WebMvcConfigurer {
         registry.viewResolver(resolver);
     }
 
+
+
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("driver"));
-        dataSource.setUsername("postgres");
-        dataSource.setPassword(env.getProperty("password"));
-        dataSource.setUrl(env.getProperty("url"));
-        return dataSource;
+        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
+
+        driverManagerDataSource.setDriverClassName(env.getProperty("hibernate.driver_class"));
+        driverManagerDataSource.setUrl(env.getProperty("hibernate.connection.url"));
+        driverManagerDataSource.setUsername(env.getProperty("hibernate.connection.username"));
+        driverManagerDataSource.setPassword(env.getProperty("hibernate.connection.password"));
+
+        return driverManagerDataSource;
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(dataSource());
     }
+
+    @Bean
+    public LocalSessionFactoryBean sessionFactory() {
+        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+        sessionFactoryBean.setDataSource(dataSource());
+        sessionFactoryBean.setPackagesToScan("ru.maxima");
+        sessionFactoryBean.setHibernateProperties(hibernateProperties());
+        return sessionFactoryBean;
+    }
+
+    @Bean
+    public PlatformTransactionManager hibernateTransactionManager() {
+        HibernateTransactionManager platformTransactionManager = new HibernateTransactionManager();
+        platformTransactionManager.setSessionFactory(sessionFactory().getObject());
+        return platformTransactionManager;
+    }
+
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        return properties;
+    }
+
+
 }

@@ -24,10 +24,10 @@ select "order".name from person join "order" on person.id = "order".person_id wh
 
 select "order".name from person join "order" on person.id = "order".person_id where person.age = 32
 
-insert into "order"( name, person_id) values ('TV', 1);
-insert into "order"( name, person_id) values ('Car', 2);
+insert into "order"( name, person_id) values ('TV', 4);
+insert into "order"( name, person_id) values ('Car', 4);
 insert into "order"( name, person_id) values ('Iphone', 3);
-insert into "order"( name, person_id) values ('Boombox', 4);
+insert into "order"( name, person_id) values ('Boombox', 5);
 insert into "order"( name, person_id) values ('Ipod', 3);
 
 drop table person
