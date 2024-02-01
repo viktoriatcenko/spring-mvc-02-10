@@ -3,14 +3,22 @@ package ru.maxima.config;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import ru.maxima.model.Citizen;
 import ru.maxima.model.Order;
+import ru.maxima.model.Passport;
 import ru.maxima.model.Person;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Configuration configuration = new Configuration().addAnnotatedClass(Person.class);
+        Configuration configuration = new Configuration()
+                .addAnnotatedClass(Order.class)
+                .addAnnotatedClass(Citizen.class)
+                .addAnnotatedClass(Passport.class)
+                .addAnnotatedClass(Person.class);
 
         SessionFactory factory = configuration.buildSessionFactory();
 
@@ -19,7 +27,21 @@ public class Main {
         try {
             session.beginTransaction();
 
-//            Person person = session.get(Person.class, 3L);
+            Citizen citizen = new Citizen("Damir", 25);
+            Passport passport = new Passport(citizen, 123456);
+
+            citizen.setPassport(passport);
+
+            session.save(citizen);
+            session.save(passport);
+
+            session.getTransaction().commit();
+
+        } finally {
+            factory.close();
+        }
+
+        //            Person person = session.get(Person.class, 3L);
 //
 //            System.out.println(person.getEmail());
 //            System.out.println(person.getName());
@@ -48,18 +70,52 @@ public class Main {
 //
 //            people.forEach(p -> System.out.println(p.getName()));
 
-            Person person = session.get(Person.class, 4L);
+//        Person person = session.get(Person.class, 4L);
+//
+//        List<Order> orders = person.getOrders();
+//
+//        orders.forEach(System.out::println);
 
-            List<Order> orders = person.getOrders();
+        //
+//            Person owner = session.get(Person.class, 3);
+//
+//            Order order = new Order("Yacht", owner);
+//
+//            session.save(order);
+//
+//
+//
+//            System.out.println(owner);
 
-            orders.forEach(System.out::println);
+//        Order order = new Order("Iphone 12 pro Max", person);
+//
+//        person.setOrders(new ArrayList<>(Collections.singletonList(order)));
+//
+//        session.save(order);
+//
+//        session.save(person);
 
-            session.getTransaction().commit();
 
+//        person.setName("Maxim1121212");
+//
+//        session.save(person);
 
-        } finally {
-            factory.close();
-        }
+//        List<Order> orders = person.getOrders();
+//
+//        // Даю Hibernate команду удалить при отправке commit()
+//        // все на уровне SQL
+//        orders.forEach(session::remove);
+//
+//        // SQL команды не делаю, удаляю на уровне кэша, так же подтверждаю ему, что нужно удалить
+//        person.getOrders().clear();
 
+        //            List<Order> orders = person.getOrders();
+//
+//            // Даю Hibernate команду удалить при отправке commit()
+//            // все на уровне SQL
+//            orders.forEach(session::remove);
+//
+//            // SQL команды не делаю, удаляю на уровне кэша, так же подтверждаю ему, что нужно удалить
+//            orders.clear();
     }
 }
