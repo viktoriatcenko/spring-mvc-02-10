@@ -3,10 +3,7 @@ package ru.maxima.config;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import ru.maxima.model.Citizen;
-import ru.maxima.model.Order;
-import ru.maxima.model.Passport;
-import ru.maxima.model.Person;
+import ru.maxima.model.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +15,8 @@ public class Main {
                 .addAnnotatedClass(Order.class)
                 .addAnnotatedClass(Citizen.class)
                 .addAnnotatedClass(Passport.class)
+                .addAnnotatedClass(Movie.class)
+                .addAnnotatedClass(Actor.class)
                 .addAnnotatedClass(Person.class);
 
         SessionFactory factory = configuration.buildSessionFactory();
@@ -27,16 +26,21 @@ public class Main {
         try {
             session.beginTransaction();
 
-            Citizen citizen = new Citizen("Damir", 25);
-            Passport passport = new Passport(citizen, 123456);
+            Movie movie = new Movie("Oppenheimer", 2023);
+            Actor actor1 = new Actor("Killian Murphy", 50);
+            Actor actor2 = new Actor("Robert Downy-jr", 53);
 
-            citizen.setPassport(passport);
+            movie.setActors(new ArrayList<>(List.of(actor1, actor2)));
+            actor1.setMovies(new ArrayList<>(Collections.singletonList(movie)));
+            actor2.setMovies(new ArrayList<>(Collections.singletonList(movie)));
 
-            session.save(citizen);
-            session.save(passport);
+            session.save(movie);
+            session.save(actor1);
+            session.save(actor2);
+
+
 
             session.getTransaction().commit();
-
         } finally {
             factory.close();
         }
@@ -70,11 +74,6 @@ public class Main {
 //
 //            people.forEach(p -> System.out.println(p.getName()));
 
-//        Person person = session.get(Person.class, 4L);
-//
-//        List<Order> orders = person.getOrders();
-//
-//        orders.forEach(System.out::println);
 
         //
 //            Person owner = session.get(Person.class, 3);
@@ -117,5 +116,29 @@ public class Main {
 //
 //            // SQL команды не делаю, удаляю на уровне кэша, так же подтверждаю ему, что нужно удалить
 //            orders.clear();
+
+        //            Citizen citizen = new Citizen("Damir", 25);
+//            Passport passport = new Passport(citizen, 123456);
+//
+//            citizen.setPassport(passport);
+//
+//            session.save(citizen);
+//            session.save(passport);
+
+        //            Person person = session.get(Person.class, 4L);
+//
+//            // На этом месте будут подгружаться связанные сущности
+////            List<Order> orders = person.getOrders();
+//
+////            orders.forEach(System.out::println);
+//
+
+//
+//            // Объект будет находиться в состоянии detached
+//            System.out.println(person.getOrders());
+
+        //            Movie movie = session.get(Movie.class, 7);
+//
+//            movie.getActors().forEach(System.out::println);
     }
 }

@@ -1,58 +1,58 @@
 package ru.maxima.dao;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.maxima.model.Person;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Component
 public class PersonDAO {
     // DAO - data access object - доступ к данным объектов
 
-    private final JdbcTemplate jdbcTemplate;
-
+    private final SessionFactory sessionFactory;
 
     @Autowired
-    public PersonDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public PersonDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-
+    // Аннотация скажет hibernate, что мы ничего не будем сохранять
+    @Transactional
     public List<Person> getAllPeople() {
-        return jdbcTemplate.query("select * from person",
-                new PersonMapper());
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery("from Person", Person.class).getResultList();
     }
 
+    @Transactional(readOnly = true)
     public Person findById(Long id) {
-        return jdbcTemplate.query("select * from person where id = ?",
-                new Object[]{id},
-                new PersonMapper()).stream()
-                .findAny().orElse(null);
+        return sessionFactory.getCurrentSession().get(Person.class, id);
     }
 
+    @Transactional
     public void save(Person person) {
-        jdbcTemplate.update("insert into person (name, age, email) VALUES (?, ?, ?)",
-                person.getName(), person.getAge(), person.getEmail());
+        sessionFactory.getCurrentSession().save(person);
     }
 
+    @Transactional
     public void update(Long id, Person editedPerson) {
-        jdbcTemplate.update("update person set name = ? , age = ? , email = ? where id = ? ",
-                editedPerson.getName(), editedPerson.getAge(), editedPerson.getEmail(), id);
+        Person person = sessionFactory.getCurrentSession().get(Person.class, id);
+        person.setName(editedPerson.getName());
+        person.setAge(editedPerson.getAge());
+        person.setEmail(editedPerson.getEmail());
     }
 
+    @Transactional
     public void deleteById(Long id) {
-        jdbcTemplate.update("delete from person where id = ?", id);
+        sessionFactory.getCurrentSession().remove(sessionFactory.getCurrentSession().get(Person.class, id));
     }
 
     public void upgradeToAdmin(Person person) {
-        jdbcTemplate.update("update person set admin = true where id = ? ",
-                 person.getId());
+//        jdbcTemplate.update("update person set admin = true where id = ? ",
+//                 person.getId());
     }
 }

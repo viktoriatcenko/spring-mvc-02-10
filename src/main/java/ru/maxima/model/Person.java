@@ -36,7 +36,7 @@ public class Person {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
     private List<Order> orders;
 
